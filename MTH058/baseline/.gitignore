@@ -1,0 +1,6 @@
+# Vim cache
+*.swp
+
+# DB
+*-ubyte.gz
+*-ubyte
