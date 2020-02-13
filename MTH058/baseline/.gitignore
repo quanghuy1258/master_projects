@@ -1,6 +1,10 @@
 # Vim cache
 *.swp
 
+# Python cache
+__pycache__
+
 # DB
 *-ubyte.gz
 *-ubyte
+

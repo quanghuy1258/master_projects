@@ -1,0 +1,8 @@
+# GPU
+# Driver version 418.56
+# CUDA   version 10.1.105
+# cuDNN  version 7.6.2
+
+# Python 3 Library
+# Tensorflow version 2.1
+
