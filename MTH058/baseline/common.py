@@ -46,7 +46,7 @@ def category2binary(x):
   return np.apply_along_axis(lambda a: temp[int(a[0])], 1, x).astype("float32")
 
 def binary2category(x):
-  return np.apply_along_axis(lambda a: a @ np.arange(10), 1, x).reshape([x.shape[0], 1]).astype("float32")
+  return np.apply_along_axis(lambda a: np.argmax(a), 1, x).reshape([x.shape[0], 1]).astype("float32")
 
 def create_checkpoint_callback(path, period):
   return ModelCheckpoint(filepath=path, verbose=1, save_weights_only=True, period=period)
@@ -58,4 +58,8 @@ def create_model():
   model.add(Dense(output_layer, activation="softmax"))
   model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
+
+def print_score(score):
+  print("Loss: {}".format(score[0]))
+  print("Categorical Accuracy:: {}".format(score[1]))
 

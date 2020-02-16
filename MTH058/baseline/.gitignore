@@ -10,3 +10,6 @@ __pycache__
 
 # Training directory
 training
+
+# Testing directory
+testing
