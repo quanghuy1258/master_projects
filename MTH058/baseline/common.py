@@ -3,6 +3,7 @@
 import os
 
 import numpy as np
+from PIL import Image
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
@@ -62,4 +63,8 @@ def create_model():
 def print_score(score):
   print("Loss: {}".format(score[0]))
   print("Categorical Accuracy:: {}".format(score[1]))
+
+def debug(debug_dir, index, image, label, predict):
+  im = Image.fromarray(image.reshape(28, 28).astype("uint8"))
+  im.save("{}/index_{}_label_{}_predict_{}.png".format(debug_dir, index, int(label), int(predict)))
 
