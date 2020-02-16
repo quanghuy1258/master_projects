@@ -8,3 +8,5 @@ __pycache__
 *-ubyte.gz
 *-ubyte
 
+# Training directory
+training
