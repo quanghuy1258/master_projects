@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
 from tensorflow.keras.callbacks import ModelCheckpoint
 
 def create_dir_if_not_exists(path):
@@ -46,10 +46,14 @@ def create_checkpoint_callback(path, period):
 
 def create_model():
   model = Sequential()
-  model.add(Conv2D(10, 5,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(10, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(10, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
   model.add(MaxPooling2D())
-  model.add(Conv2D(20, 5, activation="sigmoid"))
+  model.add(Dropout(0.1))
+  model.add(Conv2D(20, 3, activation="sigmoid"))
+  model.add(Conv2D(20, 3, activation="sigmoid"))
   model.add(MaxPooling2D())
+  model.add(Dropout(0.1))
   model.add(Flatten())
   model.add(Dense(500, activation="sigmoid"))
   model.add(Dense(150, activation="sigmoid"))
