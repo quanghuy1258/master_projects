@@ -1,0 +1,18 @@
+# Vim cache
+*.swp
+
+# Python cache
+__pycache__
+
+# DB
+*-ubyte.gz
+*-ubyte
+
+# Training directory
+training
+
+# Testing directory
+testing
+
+# Debugging directory
+debugging
