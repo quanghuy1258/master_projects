@@ -1,0 +1,19 @@
+# Vim cache
+*.swp
+
+# Python cache
+__pycache__
+
+# DB
+*.zip
+dogs-vs-cats
+index_db.txt
+
+# Training directory
+training
+
+# Testing directory
+testing
+
+# Debugging directory
+debugging
