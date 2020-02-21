@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
-import sys, os, re
+import sys, os, re, random
+
+import numpy as np
+from PIL import Image
 
 # Get db_dir
 try:
@@ -50,7 +53,62 @@ except:
   print("Type of db is not 'EMNIST by_field'")
   sys.exit(1)
 
-with open("index_db.txt", "w") as f:
-  for i in data:
-    for j in data[i]:
-      f.write("{} {}\n".format(i, j))
+# Convert to idx file format (MNIST DB format)
+# Set train and test ratio
+train_ratio = 0.8 # test_ratio = 1 - train_ratio
+
+# Split dataset
+train_data = {}
+test_data = {}
+for i in data:
+  train_data[i] = []
+  test_data[i] = []
+  for j in data[i]:
+    if random.random() < train_ratio:
+      train_data[i].append(j)
+    else:
+      test_data[i].append(j)
+
+# Get size of each dataset
+def count_dataset(dataset):
+  n = 0
+  for i in dataset:
+    n += len(dataset[i])
+  return n
+train_number = count_dataset(train_data)
+test_number = count_dataset(test_data)
+
+# Get labels and images
+def get_labels_images(cnt, dataset):
+  labels = b""
+  images = b""
+  for i in dataset:
+    for j in dataset[i]:
+      print("Processing image #{}/{}".format(cnt, train_number + test_number), end="\r")
+      im = np.average(np.array(Image.open(j)), axis=2).astype("uint8")
+      if im.shape != (128, 128):
+        raise ValueError("Shape of image in file {} is {}".format(j, im.shape))
+      images += im.tobytes()
+      labels += bytes.fromhex(i)
+      cnt += 1
+  return labels, images
+train_labels, train_images = get_labels_images(1, train_data)
+test_labels, test_images = get_labels_images(train_number + 1, test_data)
+
+# Create train dataset
+def create_dataset(prefix, number, labels, images):
+  labels_file = open("{}-labels-idx1-ubyte".format(prefix), "wb")
+  images_file = open("{}-images-idx3-ubyte".format(prefix), "wb")
+  labels_file.write(b"\x00\x00\x08\x01")
+  images_file.write(b"\x00\x00\x08\x03")
+  labels_file.write(int.to_bytes(number, length=4, byteorder="big"))
+  images_file.write(int.to_bytes(number, length=4, byteorder="big"))
+  images_file.write(int.to_bytes(128, length=4, byteorder="big"))
+  images_file.write(int.to_bytes(128, length=4, byteorder="big"))
+  labels_file.write(labels)
+  images_file.write(images)
+  labels_file.close()
+  images_file.close()
+create_dataset("train", train_number, train_labels, train_images)
+create_dataset("test", test_number, test_labels, test_images)
+
