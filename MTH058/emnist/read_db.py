@@ -78,7 +78,7 @@ def count_dataset(dataset):
 train_number = count_dataset(train_data)
 test_number = count_dataset(test_data)
 
-# Create train dataset
+# Create train and test dataset
 def create_dataset(prefix, number, dataset, cnt):
   labels_file = open("{}-labels-idx1-ubyte".format(prefix), "wb")
   images_file = open("{}-images-idx3-ubyte".format(prefix), "wb")
