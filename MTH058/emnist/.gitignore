@@ -6,8 +6,9 @@ __pycache__
 
 # DB
 *.zip
+*.gz
 by_field
-index_db.txt
+*-ubyte
 
 # Training directory
 training

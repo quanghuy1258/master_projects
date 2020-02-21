@@ -78,25 +78,8 @@ def count_dataset(dataset):
 train_number = count_dataset(train_data)
 test_number = count_dataset(test_data)
 
-# Get labels and images
-def get_labels_images(cnt, dataset):
-  labels = b""
-  images = b""
-  for i in dataset:
-    for j in dataset[i]:
-      print("Processing image #{}/{}".format(cnt, train_number + test_number), end="\r")
-      im = np.average(np.array(Image.open(j)), axis=2).astype("uint8")
-      if im.shape != (128, 128):
-        raise ValueError("Shape of image in file {} is {}".format(j, im.shape))
-      images += im.tobytes()
-      labels += bytes.fromhex(i)
-      cnt += 1
-  return labels, images
-train_labels, train_images = get_labels_images(1, train_data)
-test_labels, test_images = get_labels_images(train_number + 1, test_data)
-
 # Create train dataset
-def create_dataset(prefix, number, labels, images):
+def create_dataset(prefix, number, dataset, cnt):
   labels_file = open("{}-labels-idx1-ubyte".format(prefix), "wb")
   images_file = open("{}-images-idx3-ubyte".format(prefix), "wb")
   labels_file.write(b"\x00\x00\x08\x01")
@@ -105,10 +88,19 @@ def create_dataset(prefix, number, labels, images):
   images_file.write(int.to_bytes(number, length=4, byteorder="big"))
   images_file.write(int.to_bytes(128, length=4, byteorder="big"))
   images_file.write(int.to_bytes(128, length=4, byteorder="big"))
+  labels = b""
+  for i in dataset:
+    for j in dataset[i]:
+      print("Processing image #{}/{}".format(cnt, train_number + test_number), end="\r")
+      im = np.average(np.array(Image.open(j)), axis=2).astype("uint8")
+      if im.shape != (128, 128):
+        raise ValueError("Shape of image in file {} is {}".format(j, im.shape))
+      images_file.write(im.tobytes())
+      labels += bytes.fromhex(i)
+      cnt += 1
   labels_file.write(labels)
-  images_file.write(images)
   labels_file.close()
   images_file.close()
-create_dataset("train", train_number, train_labels, train_images)
-create_dataset("test", test_number, test_labels, test_images)
+create_dataset("train", train_number, train_data, 1)
+create_dataset("test", test_number, test_data, 1 + train_number)
 
