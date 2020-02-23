@@ -4,10 +4,11 @@ import os
 
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
-from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 
 def create_dir_if_not_exists(path):
   if not os.path.isdir(path):
@@ -44,10 +45,13 @@ def binary2category(x):
 def create_checkpoint_callback(path, period):
   return ModelCheckpoint(filepath=path, verbose=1, save_weights_only=True, period=period)
 
+def create_CSVLogger_callback(training_dir):
+  return CSVLogger("{}/{}".format(training_dir, "log.csv"))
+
 def create_model():
   model = Sequential()
   model.add(Conv2D(50, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
-  model.add(Conv2D(50, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(50, 3,  activation="sigmoid"))
   model.add(MaxPooling2D())
   model.add(Dropout(0.5))
   model.add(Conv2D(100, 3, activation="sigmoid"))
@@ -60,6 +64,15 @@ def create_model():
   model.add(Dense(10, activation="softmax"))
   model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
+
+def visualize_history(history):
+  plt.plot(history.history["categorical_accuracy"])
+  plt.plot(history.history["val_categorical_accuracy"])
+  plt.title("Model accuracy")
+  plt.ylabel("Categorical Accuracy")
+  plt.xlabel("Epoch")
+  plt.legend(["Train", "Validation"])
+  plt.show()
 
 def print_score(score):
   print("Loss: {}".format(score[0]))
