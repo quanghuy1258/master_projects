@@ -4,10 +4,11 @@ import os
 
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 
 # Metadata
 input_size = 28 * 28
@@ -52,6 +53,9 @@ def binary2category(x):
 def create_checkpoint_callback(path, period):
   return ModelCheckpoint(filepath=path, verbose=1, save_weights_only=True, period=period)
 
+def create_CSVLogger_callback(training_dir):
+  return CSVLogger("{}/{}".format(training_dir, "log.csv"))
+
 def create_model():
   model = Sequential()
   model.add(Dense(layer_1, activation="sigmoid", input_shape=(input_layer,)))
@@ -59,6 +63,15 @@ def create_model():
   model.add(Dense(output_layer, activation="softmax"))
   model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
+
+def visualize_history(history):
+  plt.plot(history.history["categorical_accuracy"])
+  plt.plot(history.history["val_categorical_accuracy"])
+  plt.title("Model accuracy")
+  plt.ylabel("Categorical Accuracy")
+  plt.xlabel("Epoch")
+  plt.legend(["Train", "Validation"])
+  plt.show()
 
 def print_score(score):
   print("Loss: {}".format(score[0]))

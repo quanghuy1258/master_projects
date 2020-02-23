@@ -33,5 +33,5 @@ history = model.fit(images, new_labels, batch_size=batch_size, epochs=epochs,
                                common.create_CSVLogger_callback(training_dir)],
                     validation_split=0.3, shuffle=True)
 
-#Visualize history
+# Visualize history
 common.visualize_history(history)
