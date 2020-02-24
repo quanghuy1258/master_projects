@@ -1,0 +1,99 @@
+# ID: 1
+# Model: Conv(50,3) x 2 --> MaxPooling
+         --> Conv(100, 3) x 2 --> MaxPooling 
+         --> Conv(200,3) --> MaxPooling
+         --> Dense(500) --> Dense(150) --> Dense(10)
+# Test: 90.92 %
+def create_model():
+  model = Sequential()
+  model.add(Conv2D(50, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(50, 3,  activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(100, 3, activation="sigmoid"))
+  model.add(Conv2D(100, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Flatten())
+  model.add(Dense(500, activation="sigmoid"))
+  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(10, activation="softmax"))
+  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  return model
+
+# ID: 2
+# Model: Conv(50, 5) --> MaxPooling --> Conv(100, 5) --> MaxPooling --> Conv(200, 3) --> MaxPooling --> Dense(500) --> Dense(150) --> Dense(10)
+# Test: 90.76 %
+def create_model():
+  model = Sequential()
+  model.add(Conv2D(50, 5,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(100, 5, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Flatten())
+  model.add(Dense(500, activation="sigmoid"))
+  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(10, activation="softmax"))
+  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  return model
+
+# ID: 3
+# Model: Conv(50,3) x 2 --> MaxPooling
+         --> Conv(200, 3) x 2 --> MaxPooling 
+         --> Conv(800,3) --> MaxPooling
+         --> Dense(500) --> Dense(150) --> Dense(10)
+# Test: 91.50 % 
+def create_model():
+  model = Sequential()
+  model.add(Conv2D(50, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(50, 3,  activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(800, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Flatten())
+  model.add(Dense(500, activation="sigmoid"))
+  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(10, activation="softmax"))
+  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  return model
+
+# ID: 4
+# Model: Conv(100,3) x 2 --> MaxPooling
+         --> Conv(200, 3) x 2 --> MaxPooling 
+         --> Conv(400,3) --> MaxPooling
+         --> Dense(500) --> Dense(150) --> Dense(10)
+# Test: 91.98 %
+def create_model():
+  model = Sequential()
+  model.add(Conv2D(100, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(100, 3,  activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(400, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Flatten())
+  model.add(Dense(500, activation="sigmoid"))
+  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(10, activation="softmax"))
+  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  return model
+
