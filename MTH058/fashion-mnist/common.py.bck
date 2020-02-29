@@ -7,10 +7,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
-
-from capsule import *
 
 def create_dir_if_not_exists(path):
   if not os.path.isdir(path):
@@ -52,12 +50,22 @@ def create_CSVLogger_callback(training_dir):
 
 def create_model():
   model = Sequential()
-  model.add(Conv2D(128, 5, activation="relu", input_shape=(28, 28, 1)))
-  model.add(Conv2D(128, 5, activation="relu"))
-  model.add(PrimaryCaps2D(32, 8, 10, 2))
-  model.add(Capsule(10, 16))
-  model.add(OutputLayer())
-  model.compile(optimizer="adam", loss=margin_loss, metrics=["categorical_accuracy"])
+  model.add(Conv2D(50, 3, activation="sigmoid", input_shape=(28, 28, 1)))
+  model.add(Conv2D(50, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(100, 3, activation="sigmoid"))
+  model.add(Conv2D(100, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Conv2D(200, 3, activation="sigmoid"))
+  model.add(MaxPooling2D())
+  model.add(Dropout(0.3))
+  model.add(Flatten())
+  model.add(Dense(500, activation="sigmoid"))
+  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(10, activation="softmax"))
+  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
 
 def visualize_history(history):
