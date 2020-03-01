@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from capsule import *
 
@@ -58,6 +59,13 @@ def create_model():
   model.add(OutputLayer())
   model.compile(optimizer="adam", loss=margin_loss, metrics=["categorical_accuracy"])
   return model
+
+def data_generator(x, y, batch_size, shift_range=0):
+  datagen = ImageDataGenerator(width_shift_range=shift_range, height_shift_range=shift_range)
+  generator = datagen.flow(x, y, batch_size=batch_size)
+  while 1:
+    x_batch, y_batch = generator.next()
+    yield (x_batch, y_batch)
 
 def visualize_history(history):
   plt.plot(history.history["categorical_accuracy"])

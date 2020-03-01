@@ -34,7 +34,7 @@ def normalize_tuple(value, n, name):
 
 def squash(x, axis=-1):
   x_squared_norm = K.sum(K.square(x), axis=axis, keepdims=True) + K.epsilon()
-  scale = K.sqrt(x_squared_norm) / (0.5 + x_squared_norm)
+  scale = K.sqrt(x_squared_norm) / (1.0 + x_squared_norm)
   return scale * x
 
 def margin_loss(y_true, y_pred):
