@@ -8,6 +8,8 @@ __pycache__
 *.zip
 dogs-vs-cats
 index_db.txt
+test1/
+train/
 
 # Training directory
 training
