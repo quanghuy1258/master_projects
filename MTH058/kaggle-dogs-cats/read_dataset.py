@@ -66,17 +66,10 @@ def create_train_test_dataset(dataset_dir):
     X_train_dog, X_test_dog, y_train_dog, y_test_dog = train_test_split(X_dog, y_dog, test_size=0.2, random_state=42)
     X_train_cat, X_test_cat, y_train_cat, y_test_cat = train_test_split(X_cat, y_cat, test_size=0.2, random_state=42)
 
-    X_train = np.concatenate((X_train_dog, X_train_cat), axis=0)
+    X_train = np.concatenate((X_train_dog, X_train_cat), axis=0) / 255 # Normalization
     y_train = np.concatenate((y_train_dog, y_train_cat), axis=0)
 
-    X_test = np.concatenate((X_test_dog, X_test_cat), axis=0)
+    X_test = np.concatenate((X_test_dog, X_test_cat), axis=0) / 255 # Normalization
     y_test = np.concatenate((y_test_dog, y_test_cat), axis=0)
 
     return X_train, y_train, X_test, y_test
-
-X_train, y_train, X_test, y_test = create_train_test_dataset('train')
-
-print(f'X_train.shape {X_train.shape}')
-print(f'y_train.shape {y_train.shape}')
-print(f'X_test.shape {X_test.shape}')
-print(f'y_test.shape {y_test.shape}')
