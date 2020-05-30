@@ -11,6 +11,8 @@ index_db.txt
 test1/
 train/
 train_temp/
+train_new/
+test_new/
 
 # Training directory
 training
