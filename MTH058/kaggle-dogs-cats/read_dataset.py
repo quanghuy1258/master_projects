@@ -34,7 +34,7 @@ def read_data(dir_name):
             print("Proceed {} of {}".format(i, num_images))
 
     # Convert to a numpy arrays
-    X = asarray(photos)
+    X = asarray(photos) / 255.0
     y = asarray(labels)
     
     return X, y
