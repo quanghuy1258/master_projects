@@ -3,7 +3,7 @@ import read_dataset
 
 # Default params
 batch_size = 128
-epochs = 10
+epochs = 20
 training_dir = "training"
 checkpoint_format = "weights.{epoch:04d}-{val_loss:.2f}.h5"
 period = 5
@@ -12,24 +12,24 @@ period = 5
 common.create_dir_if_not_exists(training_dir)
 
 # Read data
-print('Reading data...')
-X_train, y_train, X_test, y_test = read_dataset.read_dataset("train_temp")
+X_train, y_train = read_dataset.read_data('train_new/')
+print(f'X_train.shape = {X_train.shape}, y_train.shape = {y_train.shape}')
 
-# Baseline model -------------------------------------
 # Create model
-baseline_model = common.create_baseline_model()
+# model = common.create_baseline_model() # Baseline model
+model = common.create_cnn_model() # CNN model
 
 # Summary model
 print("=" * 80)
-baseline_model.summary()
+model.summary()
 input("Press Enter to continue...")
 print("=" * 80)
 
 # Train model
-history = baseline_model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
+history = model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
                     callbacks=[common.create_checkpoint_callback("{}/{}".format(training_dir, checkpoint_format), period),
                                common.create_CSVLogger_callback(training_dir)],
-                    validation_split=0.3, shuffle=True)
+                    validation_split=0.2, shuffle=True)
 
 # Visualize history
-common.visualize_history(history)
+# common.visualize_history(history)
