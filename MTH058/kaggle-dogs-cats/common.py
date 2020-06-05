@@ -32,7 +32,7 @@ def create_baseline_model():
                   metrics=['accuracy'])
     return model
 
-def create_cnn_model():
+def create_lenet5_model():
     model = Sequential()
     
     model.add(Conv2D(32, (3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(64, 64, 3)))
@@ -46,6 +46,57 @@ def create_cnn_model():
 
     opt = SGD(lr=0.001, momentum=0.9)
     model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    
+    return model
+
+
+def create_alexnet_model():
+    model = Sequential()
+    
+    # 1st Convolutional Layer
+    model.add(Conv2D(filters=96, input_shape=(64,64,3), kernel_size=(11,11), activation='relu', strides=(4,4), padding='same'))
+    # Max Pooling
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    # 2nd Convolutional Layer
+    model.add(Conv2D(filters=256, kernel_size=(11,11), strides=(1,1), activation='relu', padding='same'))
+    # Max Pooling
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    # 3rd Convolutional Layer
+    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), activation='relu', padding='same'))
+
+    # 4th Convolutional Layer
+    model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), activation='relu', padding='same'))
+
+    # 5th Convolutional Layer
+    model.add(Conv2D(filters=256, kernel_size=(3,3), strides=(1,1), activation='relu', padding='same'))
+    # Max Pooling
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    # Passing it to a Fully Connected layer
+    model.add(Flatten())
+    # 1st Fully Connected Layer
+    model.add(Dense(4096, input_shape=(64*64*3,), activation='relu'))
+    # Add Dropout to prevent overfitting
+    model.add(Dropout(0.4))
+
+    # 2nd Fully Connected Layer
+    model.add(Dense(4096, activation='relu'))
+    # Add Dropout
+    model.add(Dropout(0.4))
+
+    # 3rd Fully Connected Layer
+    model.add(Dense(1000, activation='relu'))
+    # Add Dropout
+    model.add(Dropout(0.4))
+
+    # Output Layer
+    model.add(Dense(1, activation='sigmoid'))
+    
+    opt = SGD(lr=0.001, momentum=0.9)
+    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    
     return model
 
 
