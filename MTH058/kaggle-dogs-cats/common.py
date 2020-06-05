@@ -57,11 +57,13 @@ def create_alexnet_model():
     model.add(Conv2D(filters=96, input_shape=(64,64,3), kernel_size=(11,11), activation='relu', strides=(4,4), padding='same'))
     # Max Pooling
     model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.2))
 
     # 2nd Convolutional Layer
     model.add(Conv2D(filters=256, kernel_size=(11,11), strides=(1,1), activation='relu', padding='same'))
     # Max Pooling
     model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.2))
 
     # 3rd Convolutional Layer
     model.add(Conv2D(filters=384, kernel_size=(3,3), strides=(1,1), activation='relu', padding='same'))
@@ -73,23 +75,22 @@ def create_alexnet_model():
     model.add(Conv2D(filters=256, kernel_size=(3,3), strides=(1,1), activation='relu', padding='same'))
     # Max Pooling
     model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.2))
 
     # Passing it to a Fully Connected layer
     model.add(Flatten())
     # 1st Fully Connected Layer
     model.add(Dense(4096, input_shape=(64*64*3,), activation='relu'))
     # Add Dropout to prevent overfitting
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.2))
 
     # 2nd Fully Connected Layer
     model.add(Dense(4096, activation='relu'))
-    # Add Dropout
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.5))
 
     # 3rd Fully Connected Layer
     model.add(Dense(1000, activation='relu'))
-    # Add Dropout
-    model.add(Dropout(0.4))
+    model.add(Dropout(0.2))
 
     # Output Layer
     model.add(Dense(1, activation='sigmoid'))

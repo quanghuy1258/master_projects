@@ -3,7 +3,7 @@ import read_dataset
 
 # Default params
 batch_size = 128
-epochs = 20
+epochs = 100
 training_dir = "training"
 checkpoint_format = "weights.{epoch:04d}-{val_loss:.2f}.h5"
 period = 5

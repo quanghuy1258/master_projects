@@ -10,7 +10,7 @@ print(f'X_test.shape = {X_test.shape}, y_test.shape = {y_test.shape}')
 
 # Create model
 # model = common.create_baseline_model() # Baseline model
-model = common.create_cnn_model() # CNN model
+model = common.create_alexnet_model() # AlexNet model
 
 # Load weights
 try:
