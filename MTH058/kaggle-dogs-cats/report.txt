@@ -1,3 +1,4 @@
+# Using SGD, he_uniform, padding
 - Baseline:
 Epoch 00100: saving model to training/weights.0100-0.67.h5
 125/125 [==============================] - 19s 154ms/step - loss: 0.4408 - accuracy: 0.7993 - val_loss: 0.6730 - val_accuracy: 0.6453
@@ -35,3 +36,12 @@ Epoch 00100: saving model to training/weights.0100-1.79.h5
 157/157 [==============================] - 1s 8ms/step - loss: 1.7483 - accuracy: 0.8168
 Test loss = 1.75
 Test acc = 81.68%
+
+# Using Adam only
+- CNN (Same Lenet but 5 block (Conv + MPooling)
+Epoch 00100: saving model to training/weights.0100-0.28.h5
+125/125 [==============================] - 2s 15ms/step - loss: 0.0997 - accuracy: 0.9606 - val_loss: 0.2778 - val_accuracy: 0.8992
+
+157/157 [==============================] - 1s 4ms/step - loss: 0.2809 - accuracy: 0.8930
+Test loss = 0.28
+Test acc = 89.30%
