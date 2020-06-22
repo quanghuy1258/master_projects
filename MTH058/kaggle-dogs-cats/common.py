@@ -35,20 +35,22 @@ def create_baseline_model():
 def create_lenet5_model():
     model = Sequential()
     
-    model.add(Conv2D(32, (3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(64, 64, 3)))
+    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)))
     model.add(MaxPooling2D((2, 2)))
     
-    model.add(Conv2D(64, (3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2)))
+    model.add(Dropout(0.4))
     
     model.add(Flatten())
     
-    model.add(Dense(128, activation='relu', kernel_initializer='he_uniform'))
-    model.add(Dense(64, activation='relu', kernel_initializer='he_uniform'))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
-    opt = SGD(lr=0.001, momentum=0.9)
-    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+#     opt = SGD(lr=0.001, momentum=0.9)
+#     model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     
     return model
 
@@ -56,22 +58,22 @@ def create_lenet5_model():
 def create_cnn_model():
     model = Sequential()
 
-    model.add(Conv2D(32, (3,3), input_shape=(64, 64, 3), activation='relu'))
+    model.add(Conv2D(filters=32, kernel_size=(3,3), input_shape=(64, 64, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size = (2,2)))
 
-    model.add(Conv2D(64, (3,3), activation='relu'))
-    model.add(MaxPooling2D(pool_size = (2,2)))
-    model.add(Dropout(0.4))
-
-    model.add(Conv2D(128, (3,3), activation='relu'))
+    model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
     model.add(MaxPooling2D(pool_size = (2,2)))
     model.add(Dropout(0.4))
 
-    model.add(Conv2D(256, (3,3), activation='relu'))
+    model.add(Conv2D(filters=128, kernel_size=(3,3), activation='relu'))
     model.add(MaxPooling2D(pool_size = (2,2)))
     model.add(Dropout(0.4))
 
-    model.add(Conv2D(512, (1,1), activation='relu'))
+    model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size = (2,2)))
+    model.add(Dropout(0.4))
+
+    model.add(Conv2D(filters=512, kernel_size=(1,1), activation='relu'))
 
     model.add(Flatten())
     model.add(Dropout(0.4))

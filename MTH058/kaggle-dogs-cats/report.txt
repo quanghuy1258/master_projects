@@ -45,3 +45,11 @@ Epoch 00100: saving model to training/weights.0100-0.28.h5
 157/157 [==============================] - 1s 4ms/step - loss: 0.2809 - accuracy: 0.8930
 Test loss = 0.28
 Test acc = 89.30%
+
+- Lenet5
+Epoch 00100: saving model to training/weights.0100-1.23.h5
+125/125 [==============================] - 2s 12ms/step - loss: 0.0089 - accuracy: 0.9963 - val_loss: 1.2269 - val_accuracy: 0.7975
+
+157/157 [==============================] - 1s 3ms/step - loss: 1.2201 - accuracy: 0.7870
+Test loss = 1.22
+Test acc = 78.70%
