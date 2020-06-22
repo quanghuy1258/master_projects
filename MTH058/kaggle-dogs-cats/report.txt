@@ -1,10 +1,34 @@
-Baseline:
+- Baseline:
+Epoch 00100: saving model to training/weights.0100-0.67.h5
+125/125 [==============================] - 19s 154ms/step - loss: 0.4408 - accuracy: 0.7993 - val_loss: 0.6730 - val_accuracy: 0.6453
 
-LeNet5:
+157/157 [==============================] - 3s 17ms/step - loss: 0.6775 - accuracy: 0.6456
+Test loss = 0.68
+Test acc = 64.56%
 
-AlexNet:
+---------------------------------------------------------------------------------------------
 
-VGG16:
+- LeNet5:
+Epoch 00100: saving model to training/weights.0100-1.23.h5
+125/125 [==============================] - 2s 12ms/step - loss: 0.0018 - accuracy: 1.0000 - val_loss: 1.2251 - val_accuracy: 0.7630
+
+157/157 [==============================] - 1s 4ms/step - loss: 1.2011 - accuracy: 0.7704
+Test loss = 1.20
+Test acc = 77.04%
+
+---------------------------------------------------------------------------------------------
+
+- AlexNet:
+Epoch 00100: saving model to training/weights.0100-1.12.h5
+125/125 [==============================] - 8s 61ms/step - loss: 8.7959e-04 - accuracy: 0.9999 - val_loss: 1.1250 - val_accuracy: 0.8173
+
+157/157 [==============================] - 1s 8ms/step - loss: 1.1539 - accuracy: 0.8096
+Test loss = 1.15
+Test acc = 80.96%
+
+---------------------------------------------------------------------------------------------
+
+- VGG16:
 Epoch 00100: saving model to training/weights.0100-1.79.h5
 125/125 [==============================] - 6s 52ms/step - loss: 1.5300e-05 - accuracy: 1.0000 - val_loss: 1.7886 - val_accuracy: 0.8083
 
