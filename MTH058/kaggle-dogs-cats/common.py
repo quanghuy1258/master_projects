@@ -92,20 +92,18 @@ def create_alexnet_model():
     # Alexnet
     model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(64, 64, 3)))
     model.add(MaxPooling2D(pool_size=(2,2)))
-#     model.add(Dropout(0.2))
 
     model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
     model.add(MaxPooling2D(pool_size=(2,2)))
-#     model.add(Dropout(0.2))
 
     model.add(Conv2D(filters=128, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
     model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
     model.add(Conv2D(filters=512, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
     model.add(MaxPooling2D(pool_size=(2,2)))
-#     model.add(Dropout(0.2))
 
     # Passing it to a Fully Connected layer
     model.add(Flatten())
+    model.add(Dropout(0.4))
     
     # 1st Fully Connected Layer
     model.add(Dense(4096, activation='relu'))
@@ -113,7 +111,6 @@ def create_alexnet_model():
 
     # 2nd Fully Connected Layer
     model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.5))
 
     # 3rd Fully Connected Layer
     model.add(Dense(1000, activation='relu'))
@@ -122,8 +119,9 @@ def create_alexnet_model():
     # Output Layer
     model.add(Dense(1, activation='sigmoid'))
     
-    opt = SGD(lr=0.001, momentum=0.9)
-    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+#     opt = SGD(lr=0.001, momentum=0.9)
+#     model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     
     return model
 
