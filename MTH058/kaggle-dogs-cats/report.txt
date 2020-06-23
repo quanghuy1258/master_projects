@@ -37,6 +37,15 @@ Epoch 00100: saving model to training/weights.0100-1.79.h5
 Test loss = 1.75
 Test acc = 81.68%
 
+- CNN (Same Lenet but 5 block)
+Epoch 00100: saving model to training/weights.0100-0.67.h5
+125/125 [==============================] - 2s 15ms/step - loss: 0.4427 - accuracy: 0.7934 - val_loss: 0.6727 - val_accuracy: 0.6578
+
+157/157 [==============================] - 1s 4ms/step - loss: 0.6813 - accuracy: 0.6478
+Test loss = 0.68
+Test acc = 64.78%
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Using Adam only
 - CNN (Same Lenet but 5 block (Conv + MPooling)
 Epoch 00100: saving model to training/weights.0100-0.28.h5
@@ -46,7 +55,7 @@ Epoch 00100: saving model to training/weights.0100-0.28.h5
 Test loss = 0.28
 Test acc = 89.30%
 
-- Lenet5
+- Lenet5: cao hơn 1 chút so với dùng SGD
 Epoch 00100: saving model to training/weights.0100-1.23.h5
 125/125 [==============================] - 2s 12ms/step - loss: 0.0089 - accuracy: 0.9963 - val_loss: 1.2269 - val_accuracy: 0.7975
 
@@ -54,12 +63,20 @@ Epoch 00100: saving model to training/weights.0100-1.23.h5
 Test loss = 1.22
 Test acc = 78.70%
 
-- AlexNet
+- AlexNet: (Tương đương nhau)
 Epoch 00100: saving model to training/weights.0100-1.22.h5
 125/125 [==============================] - 8s 68ms/step - loss: 0.0080 - accuracy: 0.9972 - val_loss: 1.2188 - val_accuracy: 0.8067
 
 157/157 [==============================] - 1s 7ms/step - loss: 1.2248 - accuracy: 0.8036
 Test loss = 1.22
 Test acc = 80.36%
+
+- VGG: Kết quả thấp ~ 50% (thấp hơn nhiều so với dùng SGD)
+Epoch 00030: saving model to training/weights.0030-0.69.h5
+125/125 [==============================] - 6s 48ms/step - loss: 0.6932 - accuracy: 0.5001 - val_loss: 0.6932 - val_accuracy: 0.5002
+
+157/157 [==============================] - 1s 8ms/step - loss: 0.6932 - accuracy: 0.5000
+Test loss = 0.69
+Test acc = 50.00%
 
 

@@ -18,9 +18,9 @@ print(f'X_train.shape = {X_train.shape}, y_train.shape = {y_train.shape}')
 # Create model
 # model = common.create_baseline_model() # Baseline model
 # model = common.create_lenet5_model() # LeNet5
-model = common.create_alexnet_model() # AlexNet
+# model = common.create_alexnet_model() # AlexNet
 # model = common.create_vgg_model()
-# model = common.create_cnn_model()
+model = common.create_cnn_model()
 
 # Summary model
 print("=" * 80)

@@ -81,7 +81,10 @@ def create_cnn_model():
     model.add(Dense(units=120, activation='relu'))
     model.add(Dense(units=1, activation='sigmoid'))
 
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+#     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    opt = SGD(lr=0.001, momentum=0.9)
+    model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    
     
     return model
 
