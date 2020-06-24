@@ -97,3 +97,10 @@ Epoch 00100: saving model to training/weights.0100-0.41.h5
 Test loss = 0.42
 Test acc = 91.56%
 
+- CNN (... + Dropout(0.2))
+Epoch 00100: saving model to training/weights.0100-0.23.h5
+125/125 [==============================] - 8s 61ms/step - loss: 0.0436 - accuracy: 0.9845 - val_loss: 0.2324 - val_accuracy: 0.9227
+
+157/157 [==============================] - 1s 8ms/step - loss: 0.2332 - accuracy: 0.9236
+Test loss = 0.23
+Test acc = 92.36%
