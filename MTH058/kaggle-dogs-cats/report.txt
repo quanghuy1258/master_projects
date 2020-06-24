@@ -81,6 +81,12 @@ Test loss = 0.69
 Test acc = 50.00%
 
 2. Image size = (128, 128)
+
+- LeNet:
+157/157 [==============================] - 1s 7ms/step - loss: 1.6397 - accuracy: 0.7876
+Test loss = 1.64
+Test acc = 78.76%
+
 - CNN (7 layer)
 Epoch 00100: saving model to training/weights.0100-0.22.h5
 125/125 [==============================] - 7s 53ms/step - loss: 0.0572 - accuracy: 0.9789 - val_loss: 0.2184 - val_accuracy: 0.9250
