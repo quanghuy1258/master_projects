@@ -61,7 +61,7 @@ def create_model():
   model.add(Dense(layer_1, activation="sigmoid", input_shape=(input_layer,)))
   model.add(Dense(layer_2, activation="sigmoid"))
   model.add(Dense(output_layer, activation="softmax"))
-  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
 
 def visualize_history(history):
