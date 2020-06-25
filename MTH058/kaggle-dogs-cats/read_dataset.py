@@ -4,6 +4,8 @@ from numpy import save
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 
+image_size = 128
+
 def read_data(dir_name):
     print('\nReading dataset...')
     
@@ -21,7 +23,7 @@ def read_data(dir_name):
             output = 1.0
             
         # Load image
-        photo = load_img(dir_name + path, target_size=(64, 64))
+        photo = load_img(dir_name + path, target_size=(image_size, image_size))
         
         # Convert to numpy array
         photo = img_to_array(photo)

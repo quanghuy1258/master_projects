@@ -1,3 +1,4 @@
+1. Image size = (64, 64)
 # Using SGD, he_uniform, padding
 - Baseline:
 Epoch 00100: saving model to training/weights.0100-0.67.h5
@@ -49,11 +50,11 @@ Test acc = 64.78%
 # Using Adam only
 - CNN (Same Lenet but 5 block (Conv + MPooling)
 Epoch 00100: saving model to training/weights.0100-0.28.h5
-125/125 [==============================] - 2s 15ms/step - loss: 0.0997 - accuracy: 0.9606 - val_loss: 0.2778 - val_accuracy: 0.8992
+125/125 [==============================] - 2s 15ms/step - loss: 0.1167 - accuracy: 0.9550 - val_loss: 0.2799 - val_accuracy: 0.8928
 
-157/157 [==============================] - 1s 4ms/step - loss: 0.2809 - accuracy: 0.8930
-Test loss = 0.28
-Test acc = 89.30%
+157/157 [==============================] - 1s 4ms/step - loss: 0.2672 - accuracy: 0.8952
+Test loss = 0.27
+Test acc = 89.52%
 
 - Lenet5: cao hơn 1 chút so với dùng SGD
 Epoch 00100: saving model to training/weights.0100-1.23.h5
@@ -79,4 +80,46 @@ Epoch 00030: saving model to training/weights.0030-0.69.h5
 Test loss = 0.69
 Test acc = 50.00%
 
+2. Image size = (128, 128)
 
+- Baseline: ---- out of mem
+
+
+- LeNet:
+157/157 [==============================] - 1s 7ms/step - loss: 1.6397 - accuracy: 0.7876
+Test loss = 1.64
+Test acc = 78.76%
+
+- AlexNet: ---- out of mem
+
+- VGG16
+Epoch 00100: saving model to training/weights.0100-1.39.h5
+125/125 [==============================] - 19s 152ms/step - loss: 1.5232e-05 - accuracy: 1.0000 - val_loss: 1.3899 - val_accuracy: 0.8522
+
+157/157 [==============================] - 3s 17ms/step - loss: 1.3288 - accuracy: 0.8518
+Test loss = 1.33
+Test acc = 85.18%
+
+- CNN (7 layer)
+Epoch 00100: saving model to training/weights.0100-0.22.h5
+125/125 [==============================] - 7s 53ms/step - loss: 0.0572 - accuracy: 0.9789 - val_loss: 0.2184 - val_accuracy: 0.9250
+
+157/157 [==============================] - 1s 8ms/step - loss: 0.2052 - accuracy: 0.9306
+Test loss = 0.21
+Test acc = 93.06%
+
+- CNN (Add Dense (256))
+Epoch 00100: saving model to training/weights.0100-0.41.h5
+125/125 [==============================] - 7s 59ms/step - loss: 0.0230 - accuracy: 0.9921 - val_loss: 0.4060 - val_accuracy: 0.9162
+
+157/157 [==============================] - 1s 8ms/step - loss: 0.4239 - accuracy: 0.9156
+Test loss = 0.42
+Test acc = 91.56%
+
+- CNN (... + Dropout(0.2))
+Epoch 00100: saving model to training/weights.0100-0.23.h5
+125/125 [==============================] - 8s 61ms/step - loss: 0.0436 - accuracy: 0.9845 - val_loss: 0.2324 - val_accuracy: 0.9227
+
+157/157 [==============================] - 1s 8ms/step - loss: 0.2332 - accuracy: 0.9236
+Test loss = 0.23
+Test acc = 92.36%

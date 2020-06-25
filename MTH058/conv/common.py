@@ -7,7 +7,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, Dropout, Flatten, Dense
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 
 def create_dir_if_not_exists(path):
@@ -50,19 +50,30 @@ def create_CSVLogger_callback(training_dir):
 
 def create_model():
   model = Sequential()
-  model.add(Conv2D(50, 3,  activation="sigmoid", input_shape=(28, 28, 1)))
-  model.add(Conv2D(50, 3,  activation="sigmoid"))
+
+  model.add(ZeroPadding2D(1, input_shape=(28, 28, 1)))
+  model.add(Conv2D(64, 3,  activation="relu"))
+  model.add(ZeroPadding2D(1))
+  model.add(Conv2D(64, 3,  activation="relu"))
   model.add(MaxPooling2D())
-  model.add(Dropout(0.5))
-  model.add(Conv2D(100, 3, activation="sigmoid"))
-  model.add(Conv2D(100, 3, activation="sigmoid"))
+
+  model.add(ZeroPadding2D(1))
+  model.add(Conv2D(128, 3,  activation="relu"))
+  model.add(ZeroPadding2D(1))
+  model.add(Conv2D(128, 3,  activation="relu"))
   model.add(MaxPooling2D())
-  model.add(Dropout(0.5))
+
+  model.add(Conv2D(256, 3, activation="relu"))
+  model.add(Conv2D(256, 3, activation="relu"))
+  model.add(Conv2D(256, 3, activation="relu"))
+
   model.add(Flatten())
-  model.add(Dense(500, activation="sigmoid"))
-  model.add(Dense(150, activation="sigmoid"))
+  model.add(Dense(512, activation="relu"))
+  model.add(Dropout(0.5))
+  model.add(Dense(512, activation="relu"))
+  model.add(Dropout(0.5))
   model.add(Dense(10, activation="softmax"))
-  model.compile(optimizer="rmsprop", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
+  model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["categorical_accuracy"])
   return model
 
 def visualize_history(history):

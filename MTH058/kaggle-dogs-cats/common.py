@@ -9,6 +9,8 @@ from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
 
 from tensorflow.keras.utils import to_categorical
 
+image_size = 128
+
 def create_dir_if_not_exists(path):
     if not os.path.isdir(path):
         os.makedirs(path)
@@ -22,7 +24,7 @@ def create_CSVLogger_callback(training_dir):
 def create_baseline_model():
     model = Sequential()
   
-    model.add(Dense(512, activation='relu', input_shape=(64, 64, 3)))
+    model.add(Dense(512, activation='relu', input_shape=(image_size, image_size, 3)))
     model.add(Dense(256, activation='relu'))
     model.add(Flatten())
     model.add(Dense(1, activation='sigmoid'))
@@ -35,7 +37,7 @@ def create_baseline_model():
 def create_lenet5_model():
     model = Sequential()
     
-    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)))
+    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(image_size, image_size, 3)))
     model.add(MaxPooling2D((2, 2)))
     
     model.add(Conv2D(64, (3, 3), activation='relu'))
@@ -55,42 +57,11 @@ def create_lenet5_model():
     return model
 
 
-def create_cnn_model():
-    model = Sequential()
-
-    model.add(Conv2D(filters=32, kernel_size=(3,3), input_shape=(64, 64, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size = (2,2)))
-
-    model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
-    model.add(MaxPooling2D(pool_size = (2,2)))
-    model.add(Dropout(0.4))
-
-    model.add(Conv2D(filters=128, kernel_size=(3,3), activation='relu'))
-    model.add(MaxPooling2D(pool_size = (2,2)))
-    model.add(Dropout(0.4))
-
-    model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
-    model.add(MaxPooling2D(pool_size = (2,2)))
-    model.add(Dropout(0.4))
-
-    model.add(Conv2D(filters=512, kernel_size=(1,1), activation='relu'))
-
-    model.add(Flatten())
-    model.add(Dropout(0.4))
-
-    model.add(Dense(units=120, activation='relu'))
-    model.add(Dense(units=1, activation='sigmoid'))
-
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-    
-    return model
-
-
 def create_alexnet_model():
     model = Sequential()
     
     # Alexnet
-    model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(64, 64, 3)))
+    model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(image_size, image_size, 3)))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
     model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
@@ -130,7 +101,7 @@ def create_vgg_model():
     model = Sequential()
 
     # VGG16
-    model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(64, 64, 3)))
+    model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same', input_shape=(image_size, image_size, 3)))
     model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
     model.add(MaxPooling2D(pool_size=(2,2)))
     
@@ -176,6 +147,37 @@ def create_vgg_model():
     model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
+def create_cnn_model():
+    model = Sequential()
+
+    model.add(Conv2D(filters=32, kernel_size=(3,3), input_shape=(image_size, image_size, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size = (2,2)))
+
+    model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size = (2,2)))
+    model.add(Dropout(0.4))
+
+    model.add(Conv2D(filters=128, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size = (2,2)))
+    model.add(Dropout(0.4))
+
+    model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size = (2,2)))
+    model.add(Dropout(0.4))
+
+    model.add(Conv2D(filters=512, kernel_size=(1,1), activation='relu'))
+
+    model.add(Flatten())
+    model.add(Dropout(0.4))
+
+    model.add(Dense(units=256, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(units=128, activation='relu'))
+    model.add(Dense(units=1, activation='sigmoid'))
+
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    
+    return model
 
 def visualize_history(history):
     plt.plot(history.history["accuracy"])
