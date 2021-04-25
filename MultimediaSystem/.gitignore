@@ -1,0 +1,5 @@
+# Vim cache
+*.swp
+
+# Python cache
+__pycache__
