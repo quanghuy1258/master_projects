@@ -222,6 +222,7 @@ class AttackModelBundle():
 
     def fit(self, X, y, fit_kwargs=None):
         """Train the attack models.
+
         :param X: Shadow predictions coming from
                   :py:func:`ShadowBundle.fit_transform`.
         :param y: In/Out labels
@@ -311,11 +312,16 @@ def main():
     # Compile them into the expected format for the AttackModelBundle.
     attack_test_data, real_membership_labels = prepare_attack_data(target_model, data_in, data_out)
 
+    # Compute the learning task accuracy
+    learning_guesses = target_model.predict(X_test)
+    learning_accuracy = np.mean(np.argmax(learning_guesses, 1) == np.argmax(y_test, 1))
+
     # Compute the attack accuracy.
     attack_guesses = amb.predict(attack_test_data)
     attack_accuracy = np.mean(attack_guesses == real_membership_labels)
 
-    print(attack_accuracy)
+    print("Learning task accuracy: {}".format(learning_accuracy))
+    print("Attack accuracy: {}".format(attack_accuracy))
 
 if __name__ == "__main__":
     main()
