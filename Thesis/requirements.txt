@@ -1,0 +1,7 @@
+C/C++ compiler: gcc/g++
+
+CMake: version >= 3.22
+
+Third-party libraries:
+- google/googletest
+- google/benchmark
