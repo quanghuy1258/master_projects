@@ -5,3 +5,4 @@ CMake: version >= 3.22
 Third-party libraries:
 - google/googletest
 - google/benchmark
+- openssl: version == 1.1.1
