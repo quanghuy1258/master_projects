@@ -42,9 +42,10 @@ TEST(ZKP, ZKP) {
   };
   std::unique_ptr<int64_t[]> v = Pf(x.get());
 
-  int64_t szA = D * D * L * L * log2q;
-  std::unique_ptr<int64_t[]> A(new int64_t[szA]);
-  for (int64_t i = 0; i < szA; i++)
+  graded_signature::PseudoMatrix A;
+  A.size_M = D * D * L * L * log2q;
+  A.M.reset(new int64_t[A.size_M]);
+  for (int64_t i = 0; i < A.size_M; i++)
     A[i] = UZq(rd);
   std::cout << "prepare: done" << std::endl;
 

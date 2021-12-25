@@ -11,7 +11,7 @@ namespace graded_signature {
 ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                  std::unique_ptr<int64_t[]> &x,
                  std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                 std::unique_ptr<int64_t[]> &A, Hash &rom) {
+                 PseudoMatrix &A, Hash &rom) {
   int64_t log2q = ceil_log2(q);
 
   std::random_device rd;
@@ -150,7 +150,7 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
 bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                 std::unique_ptr<int64_t[]> &v,
                 std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                std::unique_ptr<int64_t[]> &A, Hash &rom, ZKP &zkp) {
+                PseudoMatrix &A, Hash &rom, ZKP &zkp) {
   int64_t log2q = ceil_log2(q);
 
   rom.update(zkp.comm.get(), t * (3 * L + D) * sizeof(int64_t));

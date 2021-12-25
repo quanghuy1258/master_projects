@@ -14,6 +14,13 @@ double rho(double x, double c, double s);
 int64_t inverse_mod(int64_t x, int64_t p);
 int64_t get_bit(int64_t x, int64_t i);
 
+struct PseudoMatrix {
+  std::unique_ptr<int64_t[]> M;
+  int64_t size_M;
+
+  int64_t &operator[](int64_t i);
+};
+
 // lattice algorithms
 void gen_trapdoor(int64_t n, int64_t q, std::unique_ptr<int64_t[]> &A,
                   std::unique_ptr<int64_t[]> &T_A);
