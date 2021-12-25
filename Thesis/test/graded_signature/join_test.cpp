@@ -8,6 +8,7 @@
 #include "graded_signature/join.h"
 #include "graded_signature/param.h"
 #include "graded_signature/user_key_gen.h"
+#include "graded_signature/utility.h"
 
 TEST(Join, Join) {
   graded_signature::Param param;
@@ -22,7 +23,7 @@ TEST(Join, Join) {
   int64_t n = param.get_n();
   int64_t m = param.get_m();
   int64_t q = param.get_q();
-  int64_t log2q = m / (2 * n);
+  int64_t log2q = param.get_log2q();
   double beta2 = param.get_beta2();
   double betaInf = param.get_betaInf();
 
@@ -45,8 +46,7 @@ TEST(Join, Join) {
   for (int64_t i = 0; i < 2 * n; i++) {
     for (int64_t j = 0; j < 2 * m; j++) {
       int64_t t_upk = upk[j / log2q];
-      t_upk >>= j % log2q;
-      t_upk &= 1;
+      t_upk = graded_signature::get_bit(t_upk, j % log2q);
       w[i] += gpk.D_0[i * 2 * m + j] * t_upk;
       w[i] %= q;
       w[i] += q + gpk.D_1[i * 2 * m + j] * cert.s[j] % q;
@@ -72,8 +72,7 @@ TEST(Join, Join) {
 
       // RHS
       int64_t t_w = w[j / log2q];
-      t_w >>= j % log2q;
-      t_w &= 1;
+      t_w = graded_signature::get_bit(t_w, j % log2q);
       RHS += gpk.D[i * m + j] * t_w;
       RHS %= q;
     }

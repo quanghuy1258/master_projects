@@ -17,9 +17,12 @@ struct Param {
   int64_t get_n();
   int64_t get_m();
   int64_t get_q();
+  int64_t get_log2q();
   double get_sigma();
   double get_beta2();
   double get_betaInf();
+  int64_t get_intBetaInf();
+  int64_t get_logBetaInf();
   int64_t get_t();
 };
 

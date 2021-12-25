@@ -15,7 +15,7 @@ Cert join(Param param, Gpk &gpk, Gsk &gsk, std::unique_ptr<int64_t[]> &v) {
   int64_t n = param.get_n();
   int64_t m = param.get_m();
   int64_t q = param.get_q();
-  int64_t log2q = m / (2 * n);
+  int64_t log2q = param.get_log2q();
   double sigma = param.get_sigma();
   double betaInf = param.get_betaInf();
 
@@ -51,8 +51,7 @@ Cert join(Param param, Gpk &gpk, Gsk &gsk, std::unique_ptr<int64_t[]> &v) {
   for (int64_t i = 0; i < 2 * n; i++) {
     for (int64_t j = 0; j < 2 * m; j++) {
       int64_t tv = v[j / log2q];
-      tv >>= j % log2q;
-      tv &= 1;
+      tv = get_bit(tv, j % log2q);
       w[i] += gpk.D_0[i * 2 * m + j] * tv;
       w[i] %= q;
       w[i] += q + gpk.D_1[i * 2 * m + j] * cert.s[j] % q;
@@ -65,8 +64,7 @@ Cert join(Param param, Gpk &gpk, Gsk &gsk, std::unique_ptr<int64_t[]> &v) {
   for (int64_t i = 0; i < n; i++) {
     for (int64_t j = 0; j < m; j++) {
       int64_t tw = w[j / log2q];
-      tw >>= j % log2q;
-      tw &= 1;
+      tw = get_bit(tw, j % log2q);
       u[i] += gpk.D[i * m + j] * tw;
       u[i] %= q;
       u[i] += q - gpk.A_k[i * m + j] * cert.d[m + j] % q;

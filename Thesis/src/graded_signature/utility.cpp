@@ -41,6 +41,12 @@ int64_t inverse_mod(int64_t x, int64_t p) {
   return y;
 }
 
+int64_t get_bit(int64_t x, int64_t i) {
+  x >>= i;
+  x &= 1;
+  return x;
+}
+
 // [1] Trapdoors for Lattices: Simpler, Tighter, Faster, Smaller
 void gen_trapdoor(int64_t n, int64_t q, std::unique_ptr<int64_t[]> &A,
                   std::unique_ptr<int64_t[]> &T_A) {
@@ -57,8 +63,7 @@ void gen_trapdoor(int64_t n, int64_t q, std::unique_ptr<int64_t[]> &A,
     gt[i] = 1;
     gt[i] <<= i;
     qt[i] = q;
-    qt[i] >>= i;
-    qt[i] &= 1;
+    qt[i] = get_bit(qt[i], i);
   }
 
   int64_t w = n * k;  // = n * ceil_log2(q);
@@ -102,8 +107,7 @@ void gen_trapdoor(int64_t n, int64_t q, std::unique_ptr<int64_t[]> &A,
     // W
     for (int64_t j = 0; j < m_; j++) {
       T_A[(m_ + i) * m + j] = A[(i / k) * m + j];
-      T_A[(m_ + i) * m + j] >>= i % k;
-      T_A[(m_ + i) * m + j] &= 1;
+      T_A[(m_ + i) * m + j] = get_bit(T_A[(m_ + i) * m + j], i % k);
       T_A[(m_ + i) * m + j] *= -1;
     }
     // S
