@@ -11,7 +11,7 @@ namespace graded_signature {
 ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                  std::unique_ptr<int64_t[]> &x,
                  std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                 PseudoMatrix &A, Hash &rom) {
+                 PseudoMatrix &A, int64_t n, Hash &rom) {
   int64_t log2q = ceil_log2(q);
 
   std::random_device rd;
@@ -20,8 +20,8 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
   std::uniform_int_distribution<int64_t> Urho(0, (1 << log2q) - 1);
 
   ZKP zkp;
-  zkp.comm.reset(new int64_t[t * (3 * L + D)]);
-  std::memset(zkp.comm.get(), 0, t * (3 * L + D) * sizeof(int64_t));
+  zkp.comm.reset(new int64_t[t * 3 * n]);
+  std::memset(zkp.comm.get(), 0, t * 3 * n * sizeof(int64_t));
   zkp.resp.reset(new int64_t[t * (9 * L + D)]);
   for (int64_t i = 0; i < t; i++) {
     int64_t *resp = zkp.resp.get() + i * (9 * L + D);
@@ -42,9 +42,9 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
     // Pr
     std::unique_ptr<int64_t[]> Pr = P(resp + L);
 
-    int64_t *comm = zkp.comm.get() + i * (3 * L + D);
+    int64_t *comm = zkp.comm.get() + i * 3 * n;
     // C_1
-    for (int64_t j = 0; j < L + D; j++) {
+    for (int64_t j = 0; j < n; j++) {
       for (int64_t k = 0; k < L; k++) {
         comm[j] += A[j * 2 * (L + D * log2q) + k] * (resp[k] & 1);
         comm[j] %= q;
@@ -62,9 +62,9 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
         comm[j] %= q;
       }
     }
-    comm += L + D;
+    comm += n;
     // C_2
-    for (int64_t j = 0; j < L; j++) {
+    for (int64_t j = 0; j < n; j++) {
       for (int64_t k = 0; k < L * log2q; k++) {
         int64_t pi_r0 = resp[L + k / log2q];
         int64_t pi_r1 = resp[2 * L + k / log2q];
@@ -86,9 +86,9 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
         comm[j] %= q;
       }
     }
-    comm += L;
+    comm += n;
     // C_3
-    for (int64_t j = 0; j < L; j++) {
+    for (int64_t j = 0; j < n; j++) {
       for (int64_t k = 0; k < L * log2q; k++) {
         int64_t pi_xr0 = (x[k / log2q] + resp[L + k / log2q]) % q;
         int64_t pi_xr1 = (x[L + k / log2q] + resp[2 * L + k / log2q]) % q;
@@ -112,7 +112,7 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
     }
   }
 
-  rom.update(zkp.comm.get(), t * (3 * L + D) * sizeof(int64_t));
+  rom.update(zkp.comm.get(), t * 3 * n * sizeof(int64_t));
   std::unique_ptr<int64_t[]> chal = rom.digest(t);
 
   for (int64_t i = 0; i < t; i++) {
@@ -150,14 +150,14 @@ ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
 bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                 std::unique_ptr<int64_t[]> &v,
                 std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                PseudoMatrix &A, Hash &rom, ZKP &zkp) {
+                PseudoMatrix &A, int64_t n, Hash &rom, ZKP &zkp) {
   int64_t log2q = ceil_log2(q);
 
-  rom.update(zkp.comm.get(), t * (3 * L + D) * sizeof(int64_t));
+  rom.update(zkp.comm.get(), t * 3 * n * sizeof(int64_t));
   std::unique_ptr<int64_t[]> chal = rom.digest(t);
 
   for (int64_t i = 0; i < t; i++) {
-    int64_t *comm = zkp.comm.get() + i * (3 * L + D);
+    int64_t *comm = zkp.comm.get() + i * 3 * n;
     int64_t *resp = zkp.resp.get() + i * (9 * L + D);
     std::unique_ptr<int64_t[]> Py, Pr;
     switch (chal[i]) {
@@ -173,7 +173,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
       }
       // C_2 = COM(pi_r, rho_2)
       // C_3 = COM(pi_x + pi_r, rho_3)
-      for (int64_t j = 0; j < L; j++) {
+      for (int64_t j = 0; j < n; j++) {
         int64_t C_2 = 0;
         int64_t C_3 = 0;
         for (int64_t k = 0; k < 2 * L * log2q; k++) {
@@ -194,9 +194,9 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           C_3 += A[j * 4 * L * log2q + 2 * L * log2q + k] * rho_3;
           C_3 %= q;
         }
-        if (C_2 != comm[L + D + j])
+        if (C_2 != comm[n + j])
           return false;
-        if (C_3 != comm[2 * L + D + j])
+        if (C_3 != comm[2 * n + j])
           return false;
       }
       break;
@@ -208,7 +208,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           return false;
       }
       // C_1 = COM(pi, Py - v, rho_1) = COM(pi, Pr, rho_1)
-      for (int64_t j = 0; j < L + D; j++) {
+      for (int64_t j = 0; j < n; j++) {
         int64_t C_1 = 0;
         for (int64_t k = 0; k < L; k++) {
           C_1 += A[j * 2 * (L + D * log2q) + k] * (resp[k] & 1);
@@ -230,7 +230,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           return false;
       }
       // C_3 = COM(pi_xr, rho_3)
-      for (int64_t j = 0; j < L; j++) {
+      for (int64_t j = 0; j < n; j++) {
         int64_t C_3 = 0;
         for (int64_t k = 0; k < L * log2q; k++) {
           int64_t pi_xr0 = resp[L + k / log2q];
@@ -252,7 +252,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           C_3 += A[j * 4 * L * log2q + 3 * L * log2q + k] * rho_31;
           C_3 %= q;
         }
-        if (C_3 != comm[2 * L + D + j])
+        if (C_3 != comm[2 * n + j])
           return false;
       }
       break;
@@ -264,7 +264,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           return false;
       }
       // C_1 = COM(pi, Pr, rho_1)
-      for (int64_t j = 0; j < L + D; j++) {
+      for (int64_t j = 0; j < n; j++) {
         int64_t C_1 = 0;
         for (int64_t k = 0; k < L; k++) {
           C_1 += A[j * 2 * (L + D * log2q) + k] * (resp[k] & 1);
@@ -286,7 +286,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           return false;
       }
       // C_2 = COM(pi_r, rho_2)
-      for (int64_t j = 0; j < L; j++) {
+      for (int64_t j = 0; j < n; j++) {
         int64_t C_2 = 0;
         for (int64_t k = 0; k < L * log2q; k++) {
           int64_t pi_r0 = resp[L + k / log2q];
@@ -308,7 +308,7 @@ bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
           C_2 += A[j * 4 * L * log2q + 3 * L * log2q + k] * rho_21;
           C_2 %= q;
         }
-        if (C_2 != comm[L + D + j])
+        if (C_2 != comm[n + j])
           return false;
       }
       break;

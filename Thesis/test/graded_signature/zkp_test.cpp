@@ -51,8 +51,9 @@ TEST(ZKP, ZKP) {
 
   graded_signature::Hash rom_gen, rom_ver;
   graded_signature::ZKP zkp =
-      graded_signature::generate_zkp(t, D, L, q, x, Pf, A, rom_gen);
+      graded_signature::generate_zkp(t, D, L, q, x, Pf, A, D, rom_gen);
   std::cout << "generate: done" << std::endl;
 
-  EXPECT_TRUE(graded_signature::verify_zkp(t, D, L, q, v, Pf, A, rom_ver, zkp));
+  EXPECT_TRUE(
+      graded_signature::verify_zkp(t, D, L, q, v, Pf, A, D, rom_ver, zkp));
 }

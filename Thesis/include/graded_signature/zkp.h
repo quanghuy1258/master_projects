@@ -18,11 +18,11 @@ struct ZKP {
 ZKP generate_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                  std::unique_ptr<int64_t[]> &x,
                  std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                 PseudoMatrix &A, Hash &rom);
+                 PseudoMatrix &A, int64_t n, Hash &rom);
 bool verify_zkp(int64_t t, int64_t D, int64_t L, int64_t q,
                 std::unique_ptr<int64_t[]> &v,
                 std::function<std::unique_ptr<int64_t[]>(int64_t *)> &P,
-                PseudoMatrix &A, Hash &rom, ZKP &zkp);
+                PseudoMatrix &A, int64_t n, Hash &rom, ZKP &zkp);
 
 } // namespace graded_signature
 

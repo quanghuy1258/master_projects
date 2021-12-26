@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "graded_signature/param.h"
+#include "graded_signature/utility.h"
 
 namespace graded_signature {
 
@@ -17,6 +18,7 @@ struct Gpk {
   std::unique_ptr<int64_t[]> u;
   std::unique_ptr<int64_t[]> B;
   std::unique_ptr<int64_t[]> F;
+  PseudoMatrix comm_matrix;
 };
 
 struct Gsk {

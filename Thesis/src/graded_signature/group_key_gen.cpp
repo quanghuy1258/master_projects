@@ -43,6 +43,11 @@ void group_key_gen(Param param, Gpk &gpk, Gsk &gsk) {
   for (int64_t i = 0; i < 16 * n * m; i++) {
     gpk.F[i] = UZq(rd);
   }
+  gpk.comm_matrix.size_M = n * m;
+  gpk.comm_matrix.M.reset(new int64_t[gpk.comm_matrix.size_M]);
+  for (int64_t i = 0; i < gpk.comm_matrix.size_M; i++) {
+    gpk.comm_matrix.M[i] = UZq(rd);
+  }
 }
 
 } // namespace graded_signature
