@@ -47,6 +47,38 @@ int64_t get_bit(int64_t x, int64_t i) {
   return x;
 }
 
+void decompose(int64_t *x_ptr, int64_t x, int64_t intBetaInf,
+               int64_t logBetaInf) {
+  if (x < 0) {
+    *x_ptr = 1;
+    x += intBetaInf;
+  } else
+    *x_ptr = 0;
+  x_ptr++;
+  if (x >= (1 << (logBetaInf - 1))) {
+    *x_ptr = 1;
+    x -= intBetaInf + 1 - (1 << (logBetaInf - 1));
+  } else
+    *x_ptr = 0;
+  x_ptr++;
+  for (int64_t i = 0; i < logBetaInf - 1; i++)
+    x_ptr[i] = get_bit(x, i);
+}
+
+int64_t compose(int64_t *x_ptr, int64_t q, int64_t intBetaInf,
+                int64_t logBetaInf) {
+  int64_t x = 0;
+  x += x_ptr[0] * (q - intBetaInf) % q;
+  x %= q;
+  x += x_ptr[1] * (intBetaInf + 1 - (1 << (logBetaInf - 1))) % q;
+  x %= q;
+  for (int64_t i = 0; i < logBetaInf - 1; i++) {
+    x += x_ptr[2 + i] * (1 << i) % q;
+    x %= q;
+  }
+  return x;
+}
+
 int64_t &PseudoMatrix::operator[](int64_t i) {
   return M[(size_M + i % size_M) % size_M];
 }

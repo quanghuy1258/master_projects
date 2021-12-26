@@ -22,6 +22,18 @@ TEST(Utility, InverseMod) {
     EXPECT_EQ((i * graded_signature::inverse_mod(i, q)) % q, 1);
 }
 
+TEST(Utility, DecomposeCompose) {
+  int64_t q = 131063;
+  int64_t intBetaInf = 65532;
+  int64_t logBetaInf = 16;
+  int64_t x_ptr[17];
+  for (int64_t i = -intBetaInf; i <= intBetaInf; i++) {
+    graded_signature::decompose(x_ptr, i, intBetaInf, logBetaInf);
+    EXPECT_EQ((i + q) % q,
+              graded_signature::compose(x_ptr, q, intBetaInf, logBetaInf));
+  }
+}
+
 TEST(Utility, GenTrapdoor) {
   int64_t n = 16;
   int64_t q = 131063;

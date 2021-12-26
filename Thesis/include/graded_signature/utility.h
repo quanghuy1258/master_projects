@@ -13,6 +13,10 @@ int64_t ceil_log2(int64_t x);
 double rho(double x, double c, double s);
 int64_t inverse_mod(int64_t x, int64_t p);
 int64_t get_bit(int64_t x, int64_t i);
+void decompose(int64_t *x_ptr, int64_t x, int64_t intBetaInf,
+               int64_t logBetaInf);
+int64_t compose(int64_t *x_ptr, int64_t q, int64_t intBetaInf,
+                int64_t logBetaInf);
 
 struct PseudoMatrix {
   std::unique_ptr<int64_t[]> M;
