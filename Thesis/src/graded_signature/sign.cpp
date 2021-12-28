@@ -145,7 +145,7 @@ USign sign(Param &param, Gpk &gpk, Cert &cert, std::unique_ptr<int64_t[]> &v,
 
   USign usign;
   usign.cv.reset(new int64_t[2 * n]);
-  usign.ov.reset(new int64_t[2 * m]);
+  usign.ov.reset(new int64_t[4 * n]);
   // c_v, o_v
   std::memset(usign.cv.get(), 0, 2 * n * sizeof(int64_t));
   for (int64_t i = 0; i < 2 * n; i++) {
@@ -156,7 +156,9 @@ USign sign(Param &param, Gpk &gpk, Cert &cert, std::unique_ptr<int64_t[]> &v,
       usign.cv[i] %= q;
     }
   }
-  std::memcpy(usign.ov.get(), x_ptr + 2 * m, 2 * m * sizeof(int64_t));
+  std::memset(usign.ov.get(), 0, 4 * n * sizeof(int64_t));
+  for (int64_t i = 0; i < 2 * m; i++)
+    usign.ov[i / log2q] += x_ptr[2 * m + i] * (1 << (i % log2q));
 
   // VALID
   x_ptr = x.get();

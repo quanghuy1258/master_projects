@@ -36,7 +36,7 @@ TEST(Sign, Sign) {
   std::string msg = "Graded Signature";
   graded_signature::USign usign =
       graded_signature::sign(param, gpk, cert, upk, usk, msg);
-  std::memset(usign.ov.get(), 0, 2 * param.get_m() * sizeof(int64_t));
+  usign.ov.reset(nullptr);
   std::cout << "sign: done" << std::endl;
 
   EXPECT_TRUE(graded_signature::verify(param, gpk, msg, usign));
